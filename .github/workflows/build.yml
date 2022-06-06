@@ -67,7 +67,7 @@ jobs:
           #Set artifact name
           name: artifact
           #From this path
-          path: target/data-0.0.3-SNAPSHOT.jar
+          path: target/data-0.0.4-SNAPSHOT.jar
 #Deploy's job
   deploy:
     #Depends on build's job
@@ -93,4 +93,4 @@ jobs:
           environment_name: Springbootdeploy-env
           version_label: ${{github.SHA}}
           region: eu-west-3
-          deployment_package: data-0.0.3-SNAPSHOT.jar
+          deployment_package: data-0.0.4-SNAPSHOT.jar
