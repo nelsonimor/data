@@ -92,5 +92,5 @@ jobs:
           application_name: spring-boot-deploy
           environment_name: Springbootdeploy-env
           version_label: ${{github.SHA}}
-          region: us-west-2
+          region: eu-west-3
           deployment_package: data-0.0.1-SNAPSHOT.jar
