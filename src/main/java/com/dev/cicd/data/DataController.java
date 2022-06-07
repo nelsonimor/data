@@ -2,6 +2,7 @@ package com.dev.cicd.data;
 
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,10 +12,18 @@ import com.github.javafaker.Faker;
 
 @RestController
 public class DataController {
+	
+		@Value("${myvariable}")
+		private String myvariable;
 
         @GetMapping("/")
         public String healthCheck() {
                 return "HEALTH CHECK OK!!!";
+        }
+        
+        @GetMapping("/variable")
+        public String variable() {
+                return "Variable = "+myvariable;
         }
 
         @GetMapping("/version")
