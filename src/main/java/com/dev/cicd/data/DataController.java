@@ -10,7 +10,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 
+import lombok.extern.slf4j.Slf4j;
+
+
 @RestController
+@Slf4j
 public class DataController {
 
 	@Value("${myvariable}")
@@ -23,7 +27,7 @@ public class DataController {
 
 	@GetMapping("/variable")
 	public String variable() {
-		System.out.println("This is a test : variable = "+myvariable);
+		log.debug("This is a test : variable = "+myvariable);
 		return "Variable = "+myvariable;
 	}
 
