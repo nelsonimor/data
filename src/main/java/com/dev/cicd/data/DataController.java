@@ -12,54 +12,55 @@ import com.github.javafaker.Faker;
 
 @RestController
 public class DataController {
-	
-		@Value("${myvariable}")
-		private String myvariable;
 
-        @GetMapping("/")
-        public String healthCheck() {
-                return "HEALTH CHECK OK!!!";
-        }
-        
-        @GetMapping("/variable")
-        public String variable() {
-                return "Variable = "+myvariable;
-        }
+	@Value("${myvariable}")
+	private String myvariable;
 
-        @GetMapping("/version")
-        public String version() {
-                return "The actual version is 1.0.0";
-        }
+	@GetMapping("/")
+	public String healthCheck() {
+		return "HEALTH CHECK OK!!!";
+	}
 
-        @GetMapping("/nations")
-        public JsonNode getRandomNations() {
-                var objectMapper = new ObjectMapper();
-                var faker = new Faker(new Locale("en-US"));
-                var nations = objectMapper.createArrayNode();
-                for (var i = 0; i < 10; i++) {
-                        var nation = faker.nation();
-                        nations.add(objectMapper.createObjectNode()
-                                .put("nationality", nation.nationality())
-                                .put("capitalCity", nation.capitalCity())
-                                .put("flag", nation.flag())
-                                .put("language", nation.language()));
-                }
-                return nations;
-        }
+	@GetMapping("/variable")
+	public String variable() {
+		System.out.println("This is a test : variable = "+myvariable);
+		return "Variable = "+myvariable;
+	}
 
-        @GetMapping("/currencies")
-        public JsonNode getRandomCurrencies() {
-                var objectMapper = new ObjectMapper();
-                var faker = new Faker(new Locale("en-US"));
-                var currencies = objectMapper.createArrayNode();
-                for (var i = 0; i < 20; i++) {
-                        var currency = faker.currency();
-                        currencies.add(objectMapper.createObjectNode()
-                                .put("name", currency.name())
-                                .put("code", currency.code()));
-                }
-                return currencies;
+	@GetMapping("/version")
+	public String version() {
+		return "The actual version is 1.0.0";
+	}
 
-        }
+	@GetMapping("/nations")
+	public JsonNode getRandomNations() {
+		var objectMapper = new ObjectMapper();
+		var faker = new Faker(new Locale("en-US"));
+		var nations = objectMapper.createArrayNode();
+		for (var i = 0; i < 10; i++) {
+			var nation = faker.nation();
+			nations.add(objectMapper.createObjectNode()
+					.put("nationality", nation.nationality())
+					.put("capitalCity", nation.capitalCity())
+					.put("flag", nation.flag())
+					.put("language", nation.language()));
+		}
+		return nations;
+	}
+
+	@GetMapping("/currencies")
+	public JsonNode getRandomCurrencies() {
+		var objectMapper = new ObjectMapper();
+		var faker = new Faker(new Locale("en-US"));
+		var currencies = objectMapper.createArrayNode();
+		for (var i = 0; i < 20; i++) {
+			var currency = faker.currency();
+			currencies.add(objectMapper.createObjectNode()
+					.put("name", currency.name())
+					.put("code", currency.code()));
+		}
+		return currencies;
+
+	}
 
 }
