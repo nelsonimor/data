@@ -44,7 +44,7 @@ public class DataController {
 		String url = "https://nominatim.openstreetmap.org/?addressdetails=2&q="+adresse+"&format=json&limit=1&accept-language=EN";
 		ResponseEntity<AddressResult[]> response= restTemplate.getForEntity(url, AddressResult[].class);
 		
-		String result = "Result = "+response.getBody()[0].getPlace_id()+"- X = "+response.getBody()[0].getLon()+" - Y = "+response.getBody()[0].getLat();
+		String result = "Result = "+response.getBody()[0].getPlace_id()+"- X = "+response.getBody()[0].getLon()+" - Y = "+response.getBody()[0].getLat()+" - State = "+response.getBody()[0].getAddress().getState();
 		log.debug("result = "+result);
 		return result;
 	}
