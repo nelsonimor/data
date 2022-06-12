@@ -2,8 +2,7 @@ package com.dev.cicd.data;
 
 import java.util.Locale;
 
-import javax.websocket.server.PathParam;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.dev.cicd.data.dto.AddressResult;
+import com.dev.cicd.data.dto.CityBo;
+import com.dev.cicd.data.dto.CityJpaRepository;
+import com.dev.cicd.data.dto.ICityService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
@@ -22,6 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @Slf4j
 public class DataController {
+	
+	@Autowired
+	private ICityService cityService;
 
 	@Value("${myvariable}")
 	private String myvariable;
@@ -38,15 +43,20 @@ public class DataController {
 	}
 	
 	@GetMapping("/geocode/{adresse}")
-	public String geocode(@PathVariable String adresse) {
+	public AddressResult geocode(@PathVariable String adresse) {
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "https://nominatim.openstreetmap.org/?addressdetails=2&q="+adresse+"&format=json&limit=1&accept-language=EN";
 		ResponseEntity<AddressResult[]> response= restTemplate.getForEntity(url, AddressResult[].class);
 		
-		String result = "Result = "+response.getBody()[0].getPlace_id()+"- X = "+response.getBody()[0].getLon()+" - Y = "+response.getBody()[0].getLat()+" - State = "+response.getBody()[0].getAddress().getState();
-		log.debug("result = "+result);
-		return result;
+		
+		CityBo c = new CityBo();
+		c.setName(response.getBody()[0].getAddress().getTown());
+		c.setLat(response.getBody()[0].getLat());
+		c.setLon(response.getBody()[0].getLon());
+		cityService.add(c);
+		
+		return response.getBody()[0];
 	}
 
 	@GetMapping("/version")

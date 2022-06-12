@@ -10,5 +10,7 @@ public class Address {
 	private String town;
 	private String country;
 	private String state;
+	private String county;
+	private String postcode;
 
 }
