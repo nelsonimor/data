@@ -1,0 +1,6 @@
+server:
+  port: 5000
+  
+myvariable: default  
+
+logging.level.com.dev: DEBUG
