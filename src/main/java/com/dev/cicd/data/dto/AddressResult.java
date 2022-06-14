@@ -11,5 +11,6 @@ public class AddressResult {
 	private Double lon;
 	private Double lat;
 	private Address address;
+	
 
 }

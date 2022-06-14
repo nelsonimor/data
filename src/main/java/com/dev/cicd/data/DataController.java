@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.dev.cicd.data.dto.AddressResult;
 import com.dev.cicd.data.dto.CityBo;
 import com.dev.cicd.data.dto.CityJpaRepository;
+import com.dev.cicd.data.dto.GeocodingRequestDto;
+import com.dev.cicd.data.dto.GeocodingResponseDto;
 import com.dev.cicd.data.dto.ICityService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,21 +45,42 @@ public class DataController {
 		return "Variable = "+myvariable;
 	}
 	
-	@GetMapping("/geocode/{adresse}")
-	public AddressResult geocode(@PathVariable String adresse) {
+	@GetMapping("/geocode")
+	public GeocodingResponseDto geocode(@RequestBody GeocodingRequestDto geocodingRequestDto) {
 		
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "https://nominatim.openstreetmap.org/?addressdetails=2&q="+adresse+"&format=json&limit=1&accept-language=EN";
+		String url = "https://nominatim.openstreetmap.org/?addressdetails=2&q="+geocodingRequestDto.getCity()+","+geocodingRequestDto.getCountry()+"&format=json&limit=1&accept-language=EN";
 		ResponseEntity<AddressResult[]> response= restTemplate.getForEntity(url, AddressResult[].class);
 		
 		
+		AddressResult[] results = response.getBody();
+		AddressResult result = results[0];
+		
+		
+		GeocodingResponseDto geocodingResponseDto = new GeocodingResponseDto();
+		geocodingResponseDto.setCity(result.getAddress().getCity());
+		geocodingResponseDto.setCountry(result.getAddress().getCountry());
+		geocodingResponseDto.setState(result.getAddress().getState());
+		geocodingResponseDto.setCounty(result.getAddress().getCounty());
+		geocodingResponseDto.setPostcode(result.getAddress().getPostcode());
+		geocodingResponseDto.setLatitude(result.getLat());
+		geocodingResponseDto.setLongitude(result.getLon());
+		
+		
 		CityBo c = new CityBo();
-		c.setName(response.getBody()[0].getAddress().getTown());
+		c.setName(response.getBody()[0].getAddress().getCity());
+		c.setCountry(response.getBody()[0].getAddress().getCountry());
+		c.setState(response.getBody()[0].getAddress().getState());
+		c.setCounty(response.getBody()[0].getAddress().getCounty());
+		c.setPostcode(response.getBody()[0].getAddress().getPostcode());
 		c.setLat(response.getBody()[0].getLat());
 		c.setLon(response.getBody()[0].getLon());
 		cityService.add(c);
 		
-		return response.getBody()[0];
+		
+		
+		
+		return geocodingResponseDto;
 	}
 
 	@GetMapping("/version")

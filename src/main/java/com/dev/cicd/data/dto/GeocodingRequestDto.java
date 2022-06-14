@@ -5,12 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Address {
+public class GeocodingRequestDto {
 	
 	private String city;
 	private String country;
-	private String state;
-	private String county;
-	private String postcode;
+	
 
 }
