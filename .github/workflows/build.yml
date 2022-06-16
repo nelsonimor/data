@@ -94,22 +94,21 @@ jobs:
           version_label: data-0.0.15
           region: eu-west-3
           deployment_package: data-0.0.15-SNAPSHOT.jar
-          
-on: [push]
+
+name: Bump version
+on:
+  push:
+    branches:
+      - master
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout Latest Commit
-      uses: actions/checkout@v2
-
-    - name: Bump Version
-      id: bump
-      uses: nnichols/maven-version-bump-action@v3
+    - uses: actions/checkout@v2
       with:
-        github-token: ${{ secrets.github_token }}
-
-    - name: Print Version
-      run: "echo 'New Version: ${{steps.bump.outputs.version}}'"
+        fetch-depth: '0'
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.36.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        WITH_V: true
