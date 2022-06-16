@@ -31,7 +31,6 @@ public class CityBo {
 	
 	private String county;
 	
-
 	@NotNull
 	private Double lat;
 	
