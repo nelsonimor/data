@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class AddressResult {
 	
-	private String place_id;
 	private Double lon;
 	private Double lat;
 	private Address address;

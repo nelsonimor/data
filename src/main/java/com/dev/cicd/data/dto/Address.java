@@ -8,6 +8,7 @@ import lombok.Setter;
 public class Address {
 	
 	private String city;
+	private String village;
 	private String country;
 	private String state;
 	private String county;

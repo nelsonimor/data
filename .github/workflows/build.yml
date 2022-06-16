@@ -67,7 +67,7 @@ jobs:
           #Set artifact name
           name: artifact
           #From this path
-          path: target/data-0.0.14-SNAPSHOT.jar
+          path: target/data-0.0.15-SNAPSHOT.jar
 #Deploy's job
   deploy:
     #Depends on build's job
@@ -91,6 +91,25 @@ jobs:
           use_existing_version_if_available: true
           application_name: spring-boot-deploy
           environment_name: Springbootdeploy-env
-          version_label: data-0.0.14
+          version_label: data-0.0.15
           region: eu-west-3
-          deployment_package: data-0.0.14-SNAPSHOT.jar
+          deployment_package: data-0.0.15-SNAPSHOT.jar
+          
+on: [push]
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Latest Commit
+      uses: actions/checkout@v2
+
+    - name: Bump Version
+      id: bump
+      uses: nnichols/maven-version-bump-action@v3
+      with:
+        github-token: ${{ secrets.github_token }}
+
+    - name: Print Version
+      run: "echo 'New Version: ${{steps.bump.outputs.version}}'"
