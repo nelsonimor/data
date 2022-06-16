@@ -22,6 +22,7 @@ public class CityBo {
 	@NotNull
 	private String name;
 	
+	
 	@NotNull
 	private String country;
 	
