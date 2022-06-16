@@ -67,7 +67,7 @@ jobs:
           #Set artifact name
           name: artifact
           #From this path
-          path: target/data-0.0.15-SNAPSHOT.jar
+          path: target/*.jar
 #Deploy's job
   deploy:
     #Depends on build's job
